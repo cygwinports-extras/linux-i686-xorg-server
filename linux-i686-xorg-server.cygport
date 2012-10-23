@@ -1,0 +1,44 @@
+CROSS_HOST="i686-pc-linux-gnu"
+ORIG_PN="xorg-server"
+inherit cross xorg
+
+NAME="linux-i686-xorg-server"
+VERSION=1.13.0
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="X.Org X server extension SDK for Linux i686 toolchain"
+DESCRIPTION="This package does NOT contain cygwin binaries.
+Instead, it contains Linux ELF binaries.  It is for use with the
+linux-i686-gcc cross compiler, and installs into the
+/usr/i686-pc-linux-gnu/sys-root/usr/{lib,include} directories."
+
+CYGCONF_ARGS="
+	--disable-dmx \
+	--disable-dri \
+	--disable-glx \
+	--disable-glx-tls \
+	--disable-kdrive \
+	--disable-unit-tests \
+	--disable-xephyr \
+	--disable-xfake \
+	--disable-xfbdev \
+	--disable-xnest \
+	--enable-xorg \
+	--disable-xvfb \
+	--disable-xwin \
+	--disable-install-setuid \
+	--enable-xf86bigfont \
+	--disable-docs --disable-devel-docs
+"
+MAKEOPTS+=" bin_PROGRAMS= noinst_LTLIBRARIES= module_LTLIBRARIES= noinst_LIBRARIES= \
+	multimedia_LTLIBRARIES= appman_DATA= driverman_DATA= fileman_DATA= \
+	dist_miscconfig_DATA= dist_xkbcompiled_DATA= xorgconfd_DATA= "
+
+src_install() {
+	cd ${B}
+	dodir ${CROSS_BINDIR}
+	cyginstall
+	rm ${D}${CROSS_BINDIR}/X
+}
+
+KEEP_LA_FILES="none"
