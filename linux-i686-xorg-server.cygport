@@ -12,11 +12,20 @@ Instead, it contains Linux ELF binaries.  It is for use with the
 linux-i686-gcc cross compiler, and installs into the
 /usr/i686-pc-linux-gnu/sys-root/usr/{lib,include} directories."
 
+# xproto: all protos are shipped together
+DEPEND="pkgconfig(xproto)
+	pkgconfig(dri)
+	pkgconfig(libdrm)
+	pkgconfig(pciaccess)
+	pkgconfig(pixman-1)
+	pkgconfig(x11)
+	pkgconfig(xdmcp)
+	pkgconfig(xext)
+	pkgconfig(xfont)
+	pkgconfig(xkbfile)"
+
 CYGCONF_ARGS="
 	--disable-dmx \
-	--disable-dri \
-	--disable-glx \
-	--disable-glx-tls \
 	--disable-kdrive \
 	--disable-unit-tests \
 	--disable-xephyr \
@@ -27,10 +36,10 @@ CYGCONF_ARGS="
 	--disable-xvfb \
 	--disable-xwin \
 	--disable-install-setuid \
-	--enable-xf86bigfont \
 	--disable-docs --disable-devel-docs
 "
-MAKEOPTS+=" bin_PROGRAMS= noinst_LTLIBRARIES= module_LTLIBRARIES= noinst_LIBRARIES= \
+MAKEOPTS+=" bin_PROGRAMS= noinst_LTLIBRARIES= noinst_LIBRARIES= \
+	module_LTLIBRARIES= extsmodule_LTLIBRARIES= \
 	multimedia_LTLIBRARIES= appman_DATA= driverman_DATA= fileman_DATA= \
 	dist_miscconfig_DATA= dist_xkbcompiled_DATA= xorgconfd_DATA= "
 
@@ -40,5 +49,3 @@ src_install() {
 	cyginstall
 	rm ${D}${CROSS_BINDIR}/X
 }
-
-KEEP_LA_FILES="none"
